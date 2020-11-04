@@ -13,31 +13,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-export type { ConfigurationInterface } from './interfaces/ConfigurationInterface';
-export type { ConfigurableInterface } from './interfaces/ConfigurableInterface';
-
 export default (Module) => {
   const {
-    initializeMixin, meta, constant, method, patch
+    initializeMixin, meta,
   } = Module.NS;
 
-  return ['ConfigurableAddon', (BaseClass: Class<Module.NS.Module>) => {
+  return ['FsUtilsAddon', (BaseClass: Class<Module.NS.Module>) => {
     @initializeMixin
     class Mixin extends BaseClass {
       @meta static object = {};
-
-      @constant CONFIGURATION =  'ConfigurationProxy';
-
-      @method static including() {
-        patch(this.NS.Facade, this.NS.FacadePatch);
-      }
     }
-    require('./proxies/Configuration').default(Mixin);
-
-    require('./mixins/ConfigurableMixin').default(Mixin);
-    require('./mixins/MemoryConfigurationMixin').default(Mixin);
-
-    require('./patches/FacadePatch').default(Mixin);
+    require('./utils/filesList').default(Mixin);
+    require('./utils/filesListSync').default(Mixin);
+    require('./utils/filesTree').default(Mixin);
+    require('./utils/filesTreeSync').default(Mixin);
 
     return Mixin;
   }]

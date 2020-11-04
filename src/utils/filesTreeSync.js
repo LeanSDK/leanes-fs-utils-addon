@@ -13,8 +13,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-import type { ConfigurationInterface } from './ConfigurationInterface';
+import fs from 'fs';
+import glob from 'glob';
+import path from 'path';
 
-export interface ConfigurableInterface {
-  configs: ConfigurationInterface;
+export default (Module) => {
+  Module.defineUtil(__filename, (asFoldername: string, ahOptions: ?object = {}): string[] => {
+    const data = glob.sync("#{asFoldername}/**/*", ahOptions);
+    if (ahOptions.filesOnly) {
+      return data
+        .map((asPath) => {
+          try {
+            return [asPath, fs.statSync(asPath).isFile()]
+          } catch (err) {
+            return [asPath, false]
+          }
+        }).filter(([asPath, abIsFile]) => abIsFile)
+        .map(([asPath, abIsFile]) => path.relative(asFoldername, asPath))
+    } else {
+      return data.map((asPath) => path.relative(asFoldername, asPath))
+    }
+  });
 }

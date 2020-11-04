@@ -13,24 +13,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
+import fs from 'fs';
+
 export default (Module) => {
-  const {
-    CONFIGURATION,
-    Facade,
-    initializePatch, meta, method,
-    Utils: { _ }
-  } = Module.NS;
-
-  Module.definePatch(__filename, (BaseClass: Class<Facade>) => {
-    @initializePatch
-    class Patch extends BaseClass {
-      @meta static object = {};
-
-      @method initializeFacade(): void {
-        super.initializeFacade(... arguments)
-        this.addProxy(CONFIGURATION, 'Configuration', this.Module.NS.ROOT)
-      }
-    }
-    return Patch;
+  Module.defineUtil(__filename, async (asFoldername: string, ahOptions: ?object = {}): Promise<string[]> => {
+    return await new Promise((resolve, reject) => {
+      fs.readdir(asFoldername, ahOptions, (err, data) => {
+        if (err != null) {
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      })
+    })
   });
 }

@@ -13,22 +13,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-export interface ConfigurationInterface {
-  root: string;
+import fs from 'fs';
 
-  environment: string;
-
-  name: ?string;
-
-  description: ?string;
-
-  license: ?string;
-
-  version: ?string;
-
-  keywords: ?string[];
-
-  manifestPath: string;
-
-  configPath: string;
+export default (Module) => {
+  Module.defineUtil(__filename, (asFoldername: string, ahOptions: ?object = {}): string[] => {
+    return fs.readdirSync(asFoldername, ahOptions)
+  });
 }
