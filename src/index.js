@@ -13,15 +13,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
+import glob from 'glob';
+
 export default (Module) => {
   const {
-    initializeMixin, meta,
+    initializeMixin, meta, util,
   } = Module.NS;
 
   return ['FsUtilsAddon', (BaseClass: Class<Module.NS.Module>) => {
     @initializeMixin
     class Mixin extends BaseClass {
       @meta static object = {};
+
+      @util glob = glob;
     }
     require('./utils/filesList').default(Mixin);
     require('./utils/filesListSync').default(Mixin);
