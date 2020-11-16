@@ -13,20 +13,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-import fs from 'fs';
-
-export default (Module) => {
-  Module.defineUtil(__filename, async (asFoldername: string, ahOptions: ?object = {}): Promise<string[]> => {
-    return await new Promise((resolve, reject) => {
-      fs.readdir(asFoldername, ahOptions, (err, data) => {
-        if (err != null) {
-          reject(err)
-        } else {
-          resolve(data)
-        }
-      })
-    })
-  });
-
-  return Module;
+export type StreamT = {
+  pipe: Function
 }

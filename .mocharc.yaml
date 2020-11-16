@@ -8,6 +8,7 @@ full-trace: true
 growl: true
 recursive: false
 reporter: 'spec'
-require: '@babel/register'
+# require: '@babel/register'
+require: 'register-babel.js'
 # spec: 'test/**/**/*-test.js'
 watch: true

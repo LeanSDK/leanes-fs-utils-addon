@@ -15,22 +15,50 @@
 
 import glob from 'glob';
 
+import filesListTF from './utils/filesList';
+import filesListSyncTF from './utils/filesListSync';
+import filesTreeTF from './utils/filesTree';
+import filesTreeSyncTF from './utils/filesTreeSync';
+import readFileTF from './utils/readFile';
+import readFileSyncTF from './utils/readFileSync';
+import writeFileTF from './utils/writeFile';
+import writeFileSyncTF from './utils/writeFileSync';
+import createReadStreamTF from './utils/createReadStream';
+import createWriteStreamTF from './utils/createWriteStream';
+
+export type { StreamT } from './types/StreamT';
+
 export default (Module) => {
   const {
-    initializeMixin, meta, util,
+    LeanES,
+    initializeMixin, meta, util, constant, initialize, resolver, nameBy
   } = Module.NS;
 
-  return ['FsUtilsAddon', (BaseClass: Class<Module.NS.Module>) => {
+  @filesListTF
+  @filesListSyncTF
+  @filesTreeTF
+  @filesTreeSyncTF
+  @readFileTF
+  @readFileSyncTF
+  @writeFileTF
+  @writeFileSyncTF
+  @createReadStreamTF
+  @createWriteStreamTF
+  @initialize
+  @resolver(require, name => require(name))
+  class FsUtils extends LeanES {
+    @nameBy static  __filename = 'FsUtils';
+    @meta static object = {};
+  }
+
+  return ['FsUtilsAddon', (BaseClass) => {
     @initializeMixin
     class Mixin extends BaseClass {
       @meta static object = {};
 
       @util glob = glob;
+      @constant FsUtils = FsUtils;
     }
-    require('./utils/filesList').default(Mixin);
-    require('./utils/filesListSync').default(Mixin);
-    require('./utils/filesTree').default(Mixin);
-    require('./utils/filesTreeSync').default(Mixin);
 
     return Mixin;
   }]

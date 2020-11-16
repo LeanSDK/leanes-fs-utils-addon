@@ -16,13 +16,17 @@
 import fs from 'fs';
 
 export default (Module) => {
-  Module.defineUtil(__filename, async (asFoldername: string, ahOptions: ?object = {}): Promise<string[]> => {
+  const {
+    Utils: { assign }
+  } = Module.NS;
+
+  Module.defineUtil(__filename, async (asFilename: string, data, ahOptions: ?object = {}): Promise<string | Buffer> => {
     return await new Promise((resolve, reject) => {
-      fs.readdir(asFoldername, ahOptions, (err, data) => {
+      fs.writeFile(asFilename, data, assign({encoding: 'utf8'}, ahOptions), (err) => {
         if (err != null) {
           reject(err)
         } else {
-          resolve(data)
+          resolve()
         }
       })
     })

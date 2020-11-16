@@ -16,16 +16,12 @@
 import fs from 'fs';
 
 export default (Module) => {
-  Module.defineUtil(__filename, async (asFoldername: string, ahOptions: ?object = {}): Promise<string[]> => {
-    return await new Promise((resolve, reject) => {
-      fs.readdir(asFoldername, ahOptions, (err, data) => {
-        if (err != null) {
-          reject(err)
-        } else {
-          resolve(data)
-        }
-      })
-    })
+  const {
+    Utils: { assign }
+  } = Module.NS;
+
+  Module.defineUtil(__filename, (asFilename: string, data, ahOptions: ?object = {}): string | Buffer => {
+    return fs.writeFileSync(asFilename, data, assign({encoding: 'utf8'}, ahOptions))
   });
 
   return Module;
