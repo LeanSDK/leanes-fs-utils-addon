@@ -23,6 +23,4 @@ export default (Module) => {
   Module.defineUtil(__filename, (asFilename: string, ahOptions: ?object = {}): string | Buffer => {
     return fs.readFileSync(asFilename, assign({encoding: 'utf8'}, ahOptions))
   });
-
-  return Module;
 }

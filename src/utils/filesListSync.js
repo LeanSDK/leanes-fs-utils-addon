@@ -19,6 +19,4 @@ export default (Module) => {
   Module.defineUtil(__filename, (asFoldername: string, ahOptions: ?object = {}): string[] => {
     return fs.readdirSync(asFoldername, ahOptions)
   });
-
-  return Module;
 }

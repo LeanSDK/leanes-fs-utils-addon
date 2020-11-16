@@ -24,6 +24,4 @@ export default (Module) => {
   Module.defineUtil(__filename, (asFilename: string, ahOptions: ?object = {}): StreamT => {
     return fs.createReadStream(asFilename, assign({}, ahOptions))
   });
-
-  return Module;
 }

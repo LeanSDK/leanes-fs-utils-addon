@@ -34,6 +34,4 @@ export default (Module) => {
       return data.map((asPath) => path.relative(asFoldername, asPath))
     }
   });
-
-  return Module;
 }
