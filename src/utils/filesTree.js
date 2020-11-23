@@ -20,7 +20,7 @@ import path from 'path';
 export default (Module) => {
   Module.defineUtil(__filename, async (asFoldername: string, ahOptions: ?object = {}): Promise<string[]> => {
     return await new Promise((resolve, reject) => {
-      glob("#{asFoldername}/**/*", ahOptions, async (err, data) => {
+      glob(`${asFoldername}/**/*`, ahOptions, async (err, data) => {
         if (err != null) {
           return reject(err)
         }

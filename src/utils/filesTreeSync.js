@@ -19,7 +19,7 @@ import path from 'path';
 
 export default (Module) => {
   Module.defineUtil(__filename, (asFoldername: string, ahOptions: ?object = {}): string[] => {
-    const data = glob.sync("#{asFoldername}/**/*", ahOptions);
+    const data = glob.sync(`${asFoldername}/**/*`, ahOptions);
     if (ahOptions.filesOnly) {
       return data
         .map((asPath) => {
