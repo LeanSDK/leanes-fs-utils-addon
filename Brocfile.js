@@ -20,6 +20,7 @@ const dev = new Rollup(appRoot, {
   rollup: {
     input: __dirname + "/src/index.js",
     external: [
+      'glob', 'fs', 'path',
       'crypto',
       'net',
       'dns',
@@ -40,7 +41,7 @@ const dev = new Rollup(appRoot, {
       }),
       nodeResolve({
         extensions,
-        browser: true,
+        browser: false,
         preferBuiltins: false,
       }),
       commonjs({
@@ -51,8 +52,10 @@ const dev = new Rollup(appRoot, {
         extensions,
         sourceMap: true,
         exclude: "node_modules/**",
+        runtimeHelpers: true,
         presets: [
-          "@babel/preset-env"
+          // "@babel/preset-env"
+          ["@babel/preset-env", {targets: {node: '14.9'}, loose: true, useBuiltIns: false}]
         ],
         plugins: [
           "@babel/plugin-syntax-flow",
@@ -63,6 +66,7 @@ const dev = new Rollup(appRoot, {
           "@babel/plugin-transform-flow-strip-types",
           ["@babel/plugin-proposal-decorators", { "legacy": true }],
           ["@babel/plugin-proposal-class-properties", { "loose": true }],
+          "@babel/plugin-transform-runtime",
         ],
       }),
       globals({
@@ -91,6 +95,7 @@ const prod = new Rollup(appRoot, {
   rollup: {
     input: __dirname + "/src/index.js",
     external: [
+      'glob', 'fs', 'path',
       'crypto',
       'net',
       'dns',
@@ -111,7 +116,7 @@ const prod = new Rollup(appRoot, {
       }),
       nodeResolve({
         extensions,
-        browser: true,
+        browser: false,
         preferBuiltins: false,
       }),
       commonjs({
@@ -120,16 +125,19 @@ const prod = new Rollup(appRoot, {
       }),
       babel({
         extensions,
-        sourceMap: true,
+        sourceMap: false,
         exclude: "node_modules/**",
+        runtimeHelpers: true,
         presets: [
-          "@babel/preset-env"
+          // "@babel/preset-env"
+          ["@babel/preset-env", {targets: {node: '14.9'}, loose: true, useBuiltIns: false}]
         ],
         plugins: [
           "@babel/plugin-syntax-flow",
           "@babel/plugin-transform-flow-strip-types",
           ["@babel/plugin-proposal-decorators", { "legacy": true }],
           ["@babel/plugin-proposal-class-properties", { "loose": true }],
+          "@babel/plugin-transform-runtime",
         ],
       }),
       globals({

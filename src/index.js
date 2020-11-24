@@ -26,8 +26,6 @@ import writeFileSyncTF from './utils/writeFileSync';
 import createReadStreamTF from './utils/createReadStream';
 import createWriteStreamTF from './utils/createWriteStream';
 
-export type { StreamT } from './types/StreamT';
-
 export default (Module) => {
   const {
     LeanES,

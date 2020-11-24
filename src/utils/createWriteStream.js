@@ -14,7 +14,7 @@
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
 import fs from 'fs';
-import type StreamT from '../types/StreamT';
+import type { StreamT } from '../types/StreamT';
 
 export default (Module) => {
   const {
