@@ -13,24 +13,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
+import fs from 'fs';
+
 export default (Module) => {
   const {
-    CONFIGURATION,
-    Facade,
-    initializePatch, meta, method,
-    Utils: { _ }
+    Utils: { assign }
   } = Module.NS;
 
-  Module.definePatch(__filename, (BaseClass: Class<Facade>) => {
-    @initializePatch
-    class Patch extends BaseClass {
-      @meta static object = {};
-
-      @method initializeFacade(): void {
-        super.initializeFacade(... arguments)
-        this.addProxy(CONFIGURATION, 'Configuration', this.Module.NS.ROOT)
-      }
-    }
-    return Patch;
+  Module.defineUtil(__filename, async (asFilename: string, data, ahOptions: ?object = {}): Promise<string | Buffer> => {
+    return await new Promise((resolve, reject) => {
+      fs.writeFile(asFilename, data, assign({encoding: 'utf8'}, ahOptions), (err) => {
+        if (err != null) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
   });
 }

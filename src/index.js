@@ -13,31 +13,50 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-export type { ConfigurationInterface } from './interfaces/ConfigurationInterface';
-export type { ConfigurableInterface } from './interfaces/ConfigurableInterface';
+import glob from 'glob';
+
+import filesListTF from './utils/filesList';
+import filesListSyncTF from './utils/filesListSync';
+import filesTreeTF from './utils/filesTree';
+import filesTreeSyncTF from './utils/filesTreeSync';
+import readFileTF from './utils/readFile';
+import readFileSyncTF from './utils/readFileSync';
+import writeFileTF from './utils/writeFile';
+import writeFileSyncTF from './utils/writeFileSync';
+import createReadStreamTF from './utils/createReadStream';
+import createWriteStreamTF from './utils/createWriteStream';
 
 export default (Module) => {
   const {
-    initializeMixin, meta, constant, method, patch
+    LeanES,
+    initializeMixin, meta, util, constant, initialize, resolver, nameBy
   } = Module.NS;
 
-  return ['ConfigurableAddon', (BaseClass: Class<Module.NS.Module>) => {
+  @filesListTF
+  @filesListSyncTF
+  @filesTreeTF
+  @filesTreeSyncTF
+  @readFileTF
+  @readFileSyncTF
+  @writeFileTF
+  @writeFileSyncTF
+  @createReadStreamTF
+  @createWriteStreamTF
+  @initialize
+  @resolver(require, name => require(name))
+  class FsUtils extends LeanES {
+    @nameBy static  __filename = 'FsUtils';
+    @meta static object = {};
+  }
+
+  return ['FsUtilsAddon', (BaseClass) => {
     @initializeMixin
     class Mixin extends BaseClass {
       @meta static object = {};
 
-      @constant CONFIGURATION =  'ConfigurationProxy';
-
-      @method static including() {
-        patch(this.NS.Facade, this.NS.FacadePatch);
-      }
+      @util glob = glob;
+      @constant FsUtils = FsUtils;
     }
-    require('./proxies/Configuration').default(Mixin);
-
-    require('./mixins/ConfigurableMixin').default(Mixin);
-    require('./mixins/MemoryConfigurationMixin').default(Mixin);
-
-    require('./patches/FacadePatch').default(Mixin);
 
     return Mixin;
   }]

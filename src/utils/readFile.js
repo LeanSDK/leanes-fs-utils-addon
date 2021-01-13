@@ -13,22 +13,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-fs-utils-addon.  If not, see <https://www.gnu.org/licenses/>.
 
-export interface ConfigurationInterface {
-  root: string;
+import fs from 'fs';
 
-  environment: string;
+export default (Module) => {
+  const {
+    Utils: { assign }
+  } = Module.NS;
 
-  name: ?string;
-
-  description: ?string;
-
-  license: ?string;
-
-  version: ?string;
-
-  keywords: ?string[];
-
-  manifestPath: string;
-
-  configPath: string;
+  Module.defineUtil(__filename, async (asFilename: string, ahOptions: ?object = {}): Promise<string | Buffer> => {
+    return await new Promise((resolve, reject) => {
+      fs.readFile(asFilename, assign({encoding: 'utf8'}, ahOptions), (err, data) => {
+        if (err != null) {
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      })
+    })
+  });
 }
